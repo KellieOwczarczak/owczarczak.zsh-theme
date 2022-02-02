@@ -25,7 +25,6 @@ local time=$time_enabled
 #Date added
 local date="%{$FG[081]%} %D{%a %d. %b %y}%{$reset_color%}"
 
-
 # Spacing funtion to setup the layout how I want it
 function term_spacing() {
   local TERMWIDTH=$(( $COLUMNS - ${ZLE_RPROMPT_INDENT:-1} ))
@@ -39,7 +38,7 @@ function term_spacing() {
 
   local spacing=""
   for i in {1..$term_free_space}; do
-    spacing="${spacing} "
+    spacing="${spacing}─"
   done
   echo $spacing
 }
@@ -67,8 +66,11 @@ PROMPT="${lbracketb}${time}%B${user_symbol}%b "
 RPROMPT="%B${return_code}%b${date}"
 
 # Small tweaks to the git prompt
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$FG[220]%} ‹"
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$FG[105]%} ‹"
 ZSH_THEME_GIT_PROMPT_SUFFIX="›%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[196]%}✘%{$FG[220]%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[034]%}✔%{$FG[220]%}"
-ZSH_THEME_GIT_PROMPT_MODIFIED="%{$FG[063]%}●%{$FG[220]%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[196]%}✘%{$FG[105]%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[034]%}✔%{$FG[105]%}"
+ZSH_THEME_GIT_PROMPT_MODIFIED="%{$FG[220]%}●%{$FG[105]%}"
+
+# Small tweak to Conda prompt
+ZSH_THEME_CONDA_PROMPT_PREFIX="%{$FG[028]%} ("
