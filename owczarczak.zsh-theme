@@ -49,6 +49,13 @@ function pre_prompt() {
   local vcs_branch="$(git_prompt_info)"
   local venv_prompt="$(conda_prompt_info)"
 
+  # Trimming for smaller panes
+  if (( $COLUMNS < 50 )); then
+    host=" "; current_dir="%B%{$FG[093]%}%c %{$reset_color%}"; venv_prompt="$(conda_env_prompt_info)"
+  elif (( $COLUMNS < 70 )); then
+    current_dir="%B%{$FG[093]%}%c %{$reset_color%}"; venv_prompt="$(conda_env_prompt_info)"
+  fi
+
   local pre_left="${lbrackett}${user}${host}${current_dir}"
   local pre_right="${venv_prompt}${vcs_branch}"
 
