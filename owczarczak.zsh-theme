@@ -33,7 +33,7 @@ function term_spacing() {
 
   local spacing=""
   for i in {1..$term_free_space}; do
-    spacing="${spacing} "
+    spacing="${spacing}─"
   done
   echo $spacing
 }
@@ -55,7 +55,7 @@ function pre_prompt() {
   if (( $COLUMNS < 33 + ${#${(%):-%~}} )); then
     host="%B%{$FG[063]%}: %{$reset_color%}"; current_dir="%B%{$FG[093]%}%c %{$reset_color%}"
     venv_prompt="$(conda_env_prompt_info)"
-  elif (( $COLUMNS < 70 )); then
+  elif (( $COLUMNS < 60 || $COLUMNS < 55 + ${#${(%):-%~}} )); then
     host="%B%{$FG[063]%}: %{$reset_color%}"; venv_prompt="$(conda_env_prompt_info)"
   fi
 
@@ -84,4 +84,3 @@ ZSH_THEME_GIT_PROMPT_MODIFIED="%{$FG[220]%}●%{$FG[105]%}"
 
 # Small tweak to Conda prompt
 ZSH_THEME_CONDA_PROMPT_PREFIX="%{$FG[028]%} ("
-ZSH_THEME_CONDA_PROMPT_SEPARATOR="|"
