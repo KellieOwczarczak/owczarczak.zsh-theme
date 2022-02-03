@@ -8,13 +8,8 @@ local lbracketb="%{$FG[153]%}╰─%{$reset_color%}"
 # Return code coloring
 local return_code="%(?..%{$FG[124]%}%? ↵%{$reset_color%})"
 
-# Split out user and host to make user permissions coded
-local user="%B%(!.%{$FG[124]%}.%{$FG[063]%})%n%{$reset_color%}"
-local host="%B%{$FG[063]%}@%m%{$reset_color%} "
-
 # I think it is funny to put the Euro curreny symbol instead of Dollar sign
 local user_symbol='%(!.#.€)'
-local current_dir="%B%{$FG[093]%}%~ %{$reset_color%}"
 
 # local time, color coded by last return code
 time_enabled="%(?.%{$FG[087]%}.%{$FG[124]%})%* %{$reset_color%}"
@@ -38,22 +33,30 @@ function term_spacing() {
 
   local spacing=""
   for i in {1..$term_free_space}; do
-    spacing="${spacing}─"
+    spacing="${spacing} "
   done
   echo $spacing
 }
 
 # This sets up the first line of the prompt; the pre-prompt if you will
 function pre_prompt() {
+  # Set the directory path
+  local current_dir="%B%{$FG[093]%}%~ %{$reset_color%}"
+
+  # Split out user and host to make user permissions coded
+  local user="%B%(!.%{$FG[124]%}.%{$FG[063]%})%n%{$reset_color%}"
+  local host="%B%{$FG[063]%}@%m:%{$reset_color%} "
+
   # Git branch info and Conda environment info
   local vcs_branch="$(git_prompt_info)"
   local venv_prompt="$(conda_prompt_info)"
 
   # Trimming for smaller panes
-  if (( $COLUMNS < 50 )); then
-    host=" "; current_dir="%B%{$FG[093]%}%c %{$reset_color%}"; venv_prompt="$(conda_env_prompt_info)"
+  if (( $COLUMNS < 33 + ${#${(%):-%~}} )); then
+    host="%B%{$FG[063]%}: %{$reset_color%}"; current_dir="%B%{$FG[093]%}%c %{$reset_color%}"
+    venv_prompt="$(conda_env_prompt_info)"
   elif (( $COLUMNS < 70 )); then
-    current_dir="%B%{$FG[093]%}%c %{$reset_color%}"; venv_prompt="$(conda_env_prompt_info)"
+    host="%B%{$FG[063]%}: %{$reset_color%}"; venv_prompt="$(conda_env_prompt_info)"
   fi
 
   local pre_left="${lbrackett}${user}${host}${current_dir}"
@@ -81,3 +84,4 @@ ZSH_THEME_GIT_PROMPT_MODIFIED="%{$FG[220]%}●%{$FG[105]%}"
 
 # Small tweak to Conda prompt
 ZSH_THEME_CONDA_PROMPT_PREFIX="%{$FG[028]%} ("
+ZSH_THEME_CONDA_PROMPT_SEPARATOR="|"
