@@ -1,5 +1,6 @@
-# my personal theme based heavily on bira, and dieter, with a little influence from fino-time
-# then I just started playing around until I got what I wanted (I think)
+# my personal theme originally based on bira, and dieter, with a little influence from fino-time
+# Then, I just started playing around until I got what I wanted (I think).
+# It has now deviated so much that I am not sure the original inspriations are still visible.
 
 # Coloring the brackets
 local lbrackett="%{$FG[153]%}╭─%{$reset_color%}"
@@ -17,8 +18,11 @@ time_disabled="%{$FG[087]%}%* %{$reset_color%}"
 
 local time=$time_enabled
 
-#Date added
-local date="%{$FG[081]%} %D{%a %d. %b %y}%{$reset_color%}"
+# Date added with a US and DE format option
+date_de="%{$FG[081]%} %D{%a %e. %b %y}%{$reset_color%}"
+date_us="%{$FG[081]%} %D{%a %b %e, %y}%{$reset_color%}"
+
+local date=$date_de
 
 # Spacing funtion to setup the layout how I want it
 function term_spacing() {
@@ -53,10 +57,12 @@ function pre_prompt() {
 
   # Trimming for smaller panes
   if (( $COLUMNS < 33 + ${#${(%):-%~}} )); then
-    host="%B%{$FG[063]%}: %{$reset_color%}"; current_dir="%B%{$FG[093]%}%c %{$reset_color%}"
+    host="%B%{$FG[063]%}: %{$reset_color%}"
+    current_dir="%B%{$FG[093]%}%c %{$reset_color%}"
     venv_prompt="$(conda_env_prompt_info)"
   elif (( $COLUMNS < 60 || $COLUMNS < 55 + ${#${(%):-%~}} )); then
-    host="%B%{$FG[063]%}: %{$reset_color%}"; venv_prompt="$(conda_env_prompt_info)"
+    host="%B%{$FG[063]%}: %{$reset_color%}"
+    venv_prompt="$(conda_env_prompt_info)"
   fi
 
   local pre_left="${lbrackett}${user}${host}${current_dir}"
